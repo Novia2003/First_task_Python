@@ -1,20 +1,16 @@
-def read_list_numbers():
-    input_list = []
+def read_list_numbers_from_file():
+    initial_list = []
 
-    quantity_numbers = int(input("Enter quantity numbers : "))
+    with open('input.txt', 'r') as file:
+        for number in file.readline().split(", "):
+            initial_list.append(int(number))
+    # initial_list = [9, 7, -1, 5, 4, 12, 7, 8, 1, -10, 3]
 
-    for i in range(quantity_numbers):
-        input_list.append(int(input()))
-    # input_list = [9, 7, -1, 5, 4, 12, 7, 8, 1, -10, 3]
-
-    return input_list
+    return initial_list
 
 
 def get_maximum_sequence(initial_list):
-    sorted_list = []
-
-    for number in initial_list:
-        sorted_list.append(number)
+    sorted_list = list(initial_list)
 
     sorted_list.sort()
 
@@ -47,10 +43,27 @@ def get_maximum_sequence(initial_list):
     return result_list
 
 
-def print_result(r_list, i_list):
-    print("Resulting list: ", r_list)
-    print("Initial list: ", i_list)
+def get_str_from_list(name_list, current_list):
+    result_str = name_list
+
+    for i in range(len(current_list) - 1):
+        result_str += str(current_list[i]) + ", "
+
+    result_str += str(current_list[-1])
+    result_str += "\n"
+
+    return result_str
 
 
-list = read_list_numbers()
-print_result(get_maximum_sequence(list), list)
+def print_result_to_file(result_list, initial_list):
+    with open('output.txt', 'w') as file:
+        file.write(get_str_from_list("Resulting list: ", result_list))
+        file.write(get_str_from_list("Initial list: ", initial_list))
+
+
+def main():
+    initial_list = read_list_numbers_from_file()
+    print_result_to_file(get_maximum_sequence(initial_list), initial_list)
+
+
+main()
